@@ -66,6 +66,7 @@ static const char * const k_pch_Sample_DisplayFrequency_Float = "displayFrequenc
 //OpenTrack vars
 double t0, t1, t2, t3, t4, t5;
 double Yaw = 0, Pitch = 0, Roll = 0;
+double X = 0, Y = 0, Z = 0;
 struct TOpenTrackPacket {
 	double x;
 	double y;
@@ -437,6 +438,9 @@ public:
 					Yaw = DegToRad(OpenTrackPacket.yaw);
 					Pitch = DegToRad(OpenTrackPacket.pitch);
 					Roll = DegToRad(OpenTrackPacket.roll);
+					X = (OpenTrackPacket.x);
+					Y = (OpenTrackPacket.y);
+					Z = (OpenTrackPacket.z);
 				}
 				else {
 					bKeepReading = false;
@@ -457,6 +461,11 @@ public:
 		pose.qRotation.x = t0 * t3 * t4 - t1 * t2 * t5;
 		pose.qRotation.y = t0 * t2 * t5 + t1 * t3 * t4;
 		pose.qRotation.z = t1 * t2 * t4 - t0 * t3 * t5;
+
+		//Set head tracking position
+		pose.vecPosition[0] = X;
+		pose.vecPosition[1] = Y;
+		pose.vecPosition[2] = Z;
 
 		return pose;
 	}
